@@ -1,16 +1,24 @@
 <?php
 // Configurar conexión a la base de datos
-$servername = "localhost";
-$username = "root";
-$password = ""; // Cambia según tu configuración
-$dbname = "control_reporte_cuotas";
+require_once __DIR__ . '/vendor/autoload.php';
 
-$conn = new mysqli($servername, $username, $password, $dbname);
+use Dotenv\Dotenv;
 
-// Verificar la conexión
+$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
+$servername = $_ENV['DB_HOST'];
+$username = $_ENV['DB_USERNAME'];
+$password = $_ENV['DB_PASSWORD'];
+$dbname = $_ENV['DB_DATABASE'];
+$port = $_ENV['DB_PORT']; // Opcional si usas el puerto predeterminado (3306)
+
+$conn = new mysqli($servername, $username, $password, $dbname, $port);
+
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
+
 
 // Procesar los datos del formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

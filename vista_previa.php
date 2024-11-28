@@ -1,18 +1,43 @@
 <?php
+
+require_once __DIR__ . '/vendor/autoload.php';
 // Configurar conexión a la base de datos
-$servername = "localhost";
-$username = "root";
-$password = ""; // Cambia según tu configuración
-$dbname = "control_reporte_cuotas";
+use Dotenv\Dotenv;
 
-$conn = new mysqli($servername, $username, $password, $dbname);
+$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv->load();
 
-// Verificar la conexión
+$servername = $_ENV['DB_HOST'];
+$username = $_ENV['DB_USERNAME'];
+$password = $_ENV['DB_PASSWORD'];
+$dbname = $_ENV['DB_DATABASE'];
+$port = $_ENV['DB_PORT']; // Opcional si usas el puerto predeterminado (3306)
+
+$conn = new mysqli($servername, $username, $password, $dbname, $port);
+
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
-// Procesar los datos del formulario
+
+// Función para generar registro_no
+function generarRegistroNo($conn) {
+    $sql = "SELECT registro_no FROM cuotas ORDER BY id_cuotas DESC LIMIT 1";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $ultimoRegistro = $row['registro_no'];
+        $numero = (int)substr($ultimoRegistro, 4);
+        $nuevoNumero = $numero + 1;
+    } else {
+        $nuevoNumero = 1;
+    }
+
+    return "CRC-" . str_pad($nuevoNumero, 3, "0", STR_PAD_LEFT);
+}
+
+// Procesar datos del formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $cliente = $_POST['cliente'];
     $dni = $_POST['dni'];
@@ -25,54 +50,57 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $cuota_mensual = $_POST['cuota_mensual'];
     $modo_pago = $_POST['modo_pago'];
     $fecha_Deposito = $_POST['fecha_deposito'];
-    $registro_no = uniqid(); // Genera un ID único para el registro
+    $registro_no = generarRegistroNo($conn);
 
-    // Cálculos iniciales
     $saldo_contrato = $total_venta - $inicial;
-    $fecha_actual = date("Y-m-d"); // Fecha de elaboración
-    $cuotas = [];
-    $saldo_restante = $saldo_contrato;
-    $fecha_pago = new DateTime($fecha_contrato);
-    $monto_abonado = $inicial;
-    $cancelado_a_la_fecha = $inicial;
+    $fecha_actual = date("Y-m-d");
+    $saldo_actual = $saldo_contrato;
 
-    for ($i = 1; $saldo_restante > 0; $i++) {
-        $monto_pagado = ($saldo_restante >= $cuota_mensual) ? $cuota_mensual : $saldo_restante;
-        $saldo_restante -= $monto_pagado;
-        $monto_abonado += $monto_pagado;
-
-        $cuotas[] = [
-            'num_cuota' => $i,
-            'fecha_pago' => $fecha_pago->format("Y-m-d"),
-            'cuota_mensual' => $monto_pagado,
-            'monto_restante' => $saldo_restante,
-            'fecha_deposito' => $fecha_Deposito,
-            'cancelado_a_la_fecha' => $cancelado_a_la_fecha,
-            'monto_abonado' => $monto_abonado,
-            'modo_pago' => $modo_pago,
-        ];
-        $cancelado_a_la_fecha = $monto_abonado;
-        $fecha_pago->modify('+1 month'); // Incrementa 1 mes
-    }
-
-    // Insertar datos en la tabla 'cuotas'
-    $sql_cuotas = "INSERT INTO cuotas (cliente, dni, fecha_contrato, manzana, lote, area, total_venta, inicial, cuota_mensual, modo_pago, fecha_deposito, registro_no, saldo_contrato, fecha_actual, cancelado_a_la_fecha, monto_abonado)
-    VALUES ('$cliente', '$dni', '$fecha_contrato', '$manzana', '$lote', $area, $total_venta, $inicial, $cuota_mensual, '$modo_pago', '$fecha_Deposito', '$registro_no', $saldo_contrato, '$fecha_actual', $cancelado_a_la_fecha, $monto_abonado)";
+    // Insertar datos en la tabla `cuotas`
+    $sql_cuotas = "INSERT INTO cuotas (fecha_actual, registro_no, cliente, dni, fecha_contrato, manzana, lote, area, total_venta, inicial, saldo_contrato, saldo_actual)
+    VALUES ('$fecha_actual', '$registro_no', '$cliente', '$dni', '$fecha_contrato', '$manzana', '$lote', $area, $total_venta, $inicial, $saldo_contrato, $saldo_actual)";
 
     if ($conn->query($sql_cuotas) === TRUE) {
-        echo "Datos del contrato guardados correctamente.";
-    } else {
-        echo "Error: " . $sql_cuotas . "<br>" . $conn->error;
-    }
+        $id_cuotas = $conn->insert_id; // Obtener el ID del registro insertado
+        echo "Datos del contrato guardados correctamente con registro_no: $registro_no.";
 
-    // Insertar datos en la tabla 'detalle_cuotas'
-    foreach ($cuotas as $cuota) {
-        $sql_detalle = "INSERT INTO detalle_cuotas (registro_no, num_cuota, fecha_pago, cuota_mensual, monto_restante, fecha_deposito, cancelado_a_la_fecha, monto_abonado, modo_pago)
-        VALUES ('$registro_no', {$cuota['num_cuota']}, '{$cuota['fecha_pago']}', {$cuota['cuota_mensual']}, {$cuota['monto_restante']}, '{$cuota['fecha_deposito']}', {$cuota['cancelado_a_la_fecha']}, {$cuota['monto_abonado']}, '{$cuota['modo_pago']}')";
+        // Calcular cuotas
+        $cuotas = [];
+        $fecha_pago = new DateTime($fecha_contrato);
+        $cancelado_a_la_fecha = $inicial;
+        $monto_abonado = $inicial;
 
-        if (!$conn->query($sql_detalle)) {
-            echo "Error al guardar detalle de cuotas: " . $conn->error;
+        for ($i = 1; $saldo_actual > 0; $i++) {
+            $monto_pagado = ($saldo_actual >= $cuota_mensual) ? $cuota_mensual : $saldo_actual;
+            $saldo_actual -= $monto_pagado;
+            $monto_abonado += $monto_pagado;
+
+            $cuotas[] = [
+                'num_cuota' => $i,
+                'fecha_pago' => $fecha_pago->format("Y-m-d"),
+                'cuota_mensual' => $monto_pagado,
+                'monto_restante' => $saldo_actual,
+                'fecha_deposito' => $fecha_Deposito,
+                'cancelado_a_la_fecha' => $cancelado_a_la_fecha,
+                'monto_abonado' => $monto_abonado,
+                'modo_pago' => $modo_pago,
+            ];
+
+            $cancelado_a_la_fecha = $monto_abonado;
+            $fecha_pago->modify('+1 month');
         }
+
+        // Insertar cuotas en la tabla `detalle_cuotas`
+        foreach ($cuotas as $cuota) {
+            $sql_detalle = "INSERT INTO detalle_cuotas (id_cuotas, num_cuota, fecha_pago, cuota_mensual, monto_restante, fecha_deposito, cancelado_a_la_fecha, monto_abonado, modo_pago)
+            VALUES ($id_cuotas, {$cuota['num_cuota']}, '{$cuota['fecha_pago']}', {$cuota['cuota_mensual']}, {$cuota['monto_restante']}, '{$cuota['fecha_deposito']}', {$cuota['cancelado_a_la_fecha']}, {$cuota['monto_abonado']}, '{$cuota['modo_pago']}')";
+
+            if (!$conn->query($sql_detalle)) {
+                echo "Error al guardar detalle de cuotas: " . $conn->error;
+            }
+        }
+    } else {
+        echo "Error al guardar datos del contrato: " . $conn->error;
     }
 }
 
@@ -84,7 +112,7 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles/vista_previa.css">
     <title>Reporte de Cuotas</title>
 </head>
 
@@ -100,21 +128,25 @@ $conn->close();
         </header>
  <!-- Información del Cliente y Lote -->
  <section class="info">
+ <div class="info-elaboracion">
+        <p><strong>ELABORACIÓN:</strong> ING. SANTOS GOMEZ CH.</p>
+        <p><strong>FECHA:</strong> <?= $fecha_actual ?></p>
+        <p><strong>VERSIÓN:</strong> 001</p>
+        <p><strong>REGISTRO Nº:</strong> <?= htmlspecialchars($registro_no) ?></p>
+ </div>
+
  <div class="info-cliente">
-        <p><strong>Cliente:</strong> <?= htmlspecialchars($cliente) ?></p>
+        <p><strong>CLIENTE:</strong> <?= htmlspecialchars($cliente) ?></p>
         <p><strong>DNI:</strong> <?= htmlspecialchars($dni) ?></p>
-        <p><strong>Fecha Firma del Contrato:</strong> <?= htmlspecialchars($fecha_contrato) ?></p>
-        <p><strong>Manzana:</strong> <?= htmlspecialchars($manzana) ?> <strong>Lote:</strong> <?= htmlspecialchars($lote) ?></p>
-        <p><strong>Área:</strong> <?= htmlspecialchars($area) ?> m²</p>
+        <p><strong>FECHA FIRMA CONTRATO:</strong> <?= htmlspecialchars($fecha_contrato) ?></p>
+        <p><strong>MANZANA:</strong> <?= htmlspecialchars($manzana) ?> <strong>Lote:</strong> <?= htmlspecialchars($lote) ?></p>
+        <p><strong>ÁREA:</strong> <?= htmlspecialchars($area) ?> m²</p>
         </div>
 
 <div class="info-lote">
-        <p><strong>Version:</strong> 001</p>
-        <p><strong>Total Venta:</strong> S/ <?= number_format($total_venta, 2) ?></p>
-        <p><strong>Inicial:</strong> S/ <?= number_format($inicial, 2) ?></p>
-        <p><strong>Saldo Contrato:</strong> S/ <?= number_format($saldo_contrato, 2) ?></p>
-        <p><strong>Fecha de Elaboración:</strong> <?= $fecha_actual ?></p>
- 
+        <p><strong>TOTAL VENTA:</strong> S/ <?= number_format($total_venta, 2) ?></p>
+        <p><strong>INICIAL:</strong> S/ <?= number_format($inicial, 2) ?></p>
+        <p><strong>SALDO CONTRATO:</strong> S/ <?= number_format($saldo_contrato, 2) ?></p>
 </div>
 
 </section>  
@@ -134,6 +166,7 @@ $conn->close();
                         <th>Cancelado a la Fecha</th>
                         <th>Monto Abonado a la Fecha</th>
                         <th>Modo de Pago</th>
+                        
                     </tr>
                 </thead>
                 <tbody>
