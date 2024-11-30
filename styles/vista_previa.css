@@ -12,7 +12,7 @@ body {
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 100%;
     margin: 0 auto;
     background: #ffffff;
     padding: 20px;
@@ -85,6 +85,7 @@ header .logo {
 }
 
 .footer {
+    overflow: hidden; /* Evita que cualquier contenido desborde */
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -107,12 +108,17 @@ header .logo {
     justify-content: center;
     width: 45%;
     text-align: center;
+    max-width: 100%; /* Asegura que la imagen no exceda el ancho del contenedor */
+    max-height: 100%; /* Limita la altura de la imagen al tamaño del contenedor */
+    object-fit: contain; /* Ajusta la imagen para que se mantenga dentro de los límites sin deformarse */
 }
 
 .footer-right img {
-    max-width: 50%; /* Ajusta el tamaño máximo relativo al contenedor */
-    max-height: 50%; /* Asegura que ocupe la altura disponible */
+    max-width: 90%; /* Asegura que la imagen no ocupe más espacio del necesario */
+    max-height: 90%; /* Mantiene la proporción adecuada */
+    margin: auto; /* Centra la imagen dentro del contenedor */
 }
+
 
 .footer-left img{
     max-width: 50%; /* Ajusta el tamaño máximo relativo al contenedor */

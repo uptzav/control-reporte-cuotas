@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario de Registro</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
         body {
             padding: 20px;
@@ -68,5 +68,28 @@
 </form>
         </form>
     </div>
+
+    <script>
+    const totalVentaInput = document.getElementById('total_venta');
+    const inicialInput = document.getElementById('inicial');
+    const cuotaMensualInput = document.getElementById('cuota_mensual');
+
+    function validateFields() {
+        const totalVenta = parseFloat(totalVentaInput.value) || 0;
+        const inicial = parseFloat(inicialInput.value) || 0;
+        const saldoRestante = totalVenta - inicial;
+
+        if (inicial > totalVenta) {
+            alert('El monto inicial no puede ser mayor que el Total Venta.');
+            inicialInput.value = '';
+        }
+
+    }
+
+    totalVentaInput.addEventListener('input', validateFields);
+    inicialInput.addEventListener('input', validateFields);
+    cuotaMensualInput.addEventListener('input', validateFields);
+</script>
+
 </body>
 </html>
