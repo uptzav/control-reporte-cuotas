@@ -20,6 +20,8 @@ if ($conn->connect_error) {
 }
 
 
+$moneda = isset($_POST['moneda']) ? $_POST['moneda'] : null;
+
 // Procesar los datos del formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $cliente = $_POST['cliente'];
@@ -33,8 +35,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $cuota_mensual = $_POST['cuota_mensual'];
     $modo_pago = $_POST['modo_pago'];
     $fecha_Deposito = $_POST['fecha_deposito'];
+    $moneda = $_POST['moneda'];
     $registro_no = uniqid(); // Genera un ID único para el registro
 
+    // Validar que la moneda sea válida
+
+
+    // Validar que la moneda sea válida
+    if (!in_array($moneda, ['S/. ', '$ '])) {
+        die("Moneda inválida. Seleccione 'S/. ' o '$ '.");
+    }
+    
     // Cálculos iniciales
     $saldo_contrato = $total_venta - $inicial;
     $fecha_actual = date("Y-m-d"); // Fecha de elaboración
@@ -58,15 +69,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'cancelado_a_la_fecha' => $cancelado_a_la_fecha,
             'monto_abonado' => $monto_abonado,
             'modo_pago' => $modo_pago,
+            'moneda' => $moneda,
         ];
         $cancelado_a_la_fecha = $monto_abonado;
         $fecha_pago->modify('+1 month'); // Incrementa 1 mes
     }
 
     // Insertar datos en la tabla 'cuotas'
-    $sql_cuotas = "INSERT INTO cuotas (cliente, dni, fecha_contrato, manzana, lote, area, total_venta, inicial, cuota_mensual, modo_pago, fecha_deposito, registro_no, saldo_contrato, fecha_actual, cancelado_a_la_fecha, monto_abonado)
-    VALUES ('$cliente', '$dni', '$fecha_contrato', '$manzana', '$lote', $area, $total_venta, $inicial, $cuota_mensual, '$modo_pago', '$fecha_Deposito', '$registro_no', $saldo_contrato, '$fecha_actual', $cancelado_a_la_fecha, $monto_abonado)";
-
+    $sql_cuotas = "INSERT INTO cuotas (fecha_actual, registro_no, cliente, dni, fecha_contrato, manzana, lote, area, total_venta, inicial, saldo_contrato, saldo_actual, moneda)
+    VALUES ('$fecha_actual', '$registro_no', '$cliente', '$dni', '$fecha_contrato', '$manzana', '$lote', $area, $total_venta, $inicial, $saldo_contrato, $saldo_actual, '$moneda')";
+    
     if ($conn->query($sql_cuotas) === TRUE) {
         echo "Datos del contrato guardados correctamente.";
     } else {
@@ -75,8 +87,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Insertar datos en la tabla 'detalle_cuotas'
     foreach ($cuotas as $cuota) {
-        $sql_detalle = "INSERT INTO detalle_cuotas (registro_no, num_cuota, fecha_pago, cuota_mensual, monto_restante, fecha_deposito, cancelado_a_la_fecha, monto_abonado, modo_pago)
-        VALUES ('$registro_no', {$cuota['num_cuota']}, '{$cuota['fecha_pago']}', {$cuota['cuota_mensual']}, {$cuota['monto_restante']}, '{$cuota['fecha_deposito']}', {$cuota['cancelado_a_la_fecha']}, {$cuota['monto_abonado']}, '{$cuota['modo_pago']}')";
+        $sql_detalle = "INSERT INTO detalle_cuotas (id_cuotas, num_cuota, fecha_pago, cuota_mensual, moneda_cuota_mensual, monto_restante, fecha_deposito, cancelado_a_la_fecha, monto_abonado, modo_pago)
+VALUES ($id_cuotas, {$cuota['num_cuota']}, '{$cuota['fecha_pago']}', {$cuota['cuota_mensual']}, '$moneda_cuota_mensual', {$cuota['monto_restante']}, '{$cuota['fecha_deposito']}', {$cuota['cancelado_a_la_fecha']}, {$cuota['monto_abonado']}, '{$cuota['modo_pago']}')";
+
 
         if (!$conn->query($sql_detalle)) {
             echo "Error al guardar detalle de cuotas: " . $conn->error;

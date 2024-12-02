@@ -38,12 +38,52 @@ header .logo {
 
 .info {
     display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
+    flex-wrap: wrap; /* Permite que los elementos se ajusten en dispositivos pequeños */
+    gap: 20px; /* Espaciado entre las secciones */
+    margin-bottom: 30px; /* Separación de otras secciones */
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f9f9f9; /* Fondo suave */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+}
+
+.info div {
+    flex: 1; /* Todas las divisiones tendrán el mismo ancho */
+    min-width: 250px; /* Asegura un tamaño mínimo para cada bloque */
+    padding: 15px;
+    border: 1px solid #e0e0e0; /* Bordes suaves */
+    border-radius: 8px;
+    background-color: #ffffff; /* Fondo blanco */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Sombra sutil */
 }
 
 .info p {
+    margin: 8px 0; /* Espaciado entre los párrafos */
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #333; /* Texto oscuro pero no negro puro */
+}
+
+.info strong {
+    color: #4CAF50; /* Destacar texto en verde */
+    font-weight: bold;
+}
+
+.info-lote p strong {
+    display: block;
+    font-size: 1.1rem; /* Resaltar los títulos en los valores */
     margin-bottom: 5px;
+}
+
+.info-lote {
+    background-color: #f0fdf4; /* Fondo verde claro para esta sección */
+    border: 1px solid #d1e7dd; /* Bordes verdes */
+}
+
+@media (max-width: 768px) {
+    .info {
+        flex-direction: column; /* Apilar las secciones verticalmente en pantallas pequeñas */
+    }
 }
 
 .imagen-proyecto {

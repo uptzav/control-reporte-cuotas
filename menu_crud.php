@@ -40,6 +40,7 @@ $sql = "SELECT
             cuotas.lote,
             cuotas.total_venta,
             cuotas.saldo_actual,
+            cuotas.moneda,
             detalle_cuotas.num_cuota,
             detalle_cuotas.fecha_pago,
             detalle_cuotas.cuota_mensual,
@@ -104,10 +105,10 @@ $datos = $result->fetch_all(MYSQLI_ASSOC);
                         <td><?= $row['dni'] ?></td>
                         <td><?= $row['num_cuota'] ?></td>
                         <td><?= date('d/m/Y', strtotime($row['fecha_pago'])) ?></td>
-                        <td>S/ <?= number_format($row['cuota_mensual'], 2) ?></td>
-                        <td>S/ <?= number_format($row['monto_restante'], 2) ?></td>
+                        <td><?= $row['moneda'], number_format($row['cuota_mensual'], 2) ?></td>
+                        <td><?= $row['moneda'], number_format($row['monto_restante'], 2) ?></td>
                         <td><?= date('d/m/Y', strtotime($row['fecha_deposito'])) ?></td>
-                        <td>S/ <?= number_format($row['cancelado_a_la_fecha'], 2) ?></td>
+                        <td><?= $row['moneda'], number_format($row['cancelado_a_la_fecha'], 2) ?></td>
 
 
                         <td>

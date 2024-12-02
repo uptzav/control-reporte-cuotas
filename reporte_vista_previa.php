@@ -82,9 +82,10 @@ $conn->close();
         </div>
 
         <div class="info-lote">
-            <p><strong>TOTAL VENTA:</strong> S/ <?= number_format($cuota['total_venta'], 2) ?></p>
-            <p><strong>INICIAL:</strong> S/ <?= number_format($cuota['inicial'], 2) ?></p>
-            <p><strong>SALDO CONTRATO:</strong> S/ <?= number_format($cuota['saldo_contrato'], 2) ?></p>
+   <p><strong>TOTAL VENTA: </strong><?= htmlspecialchars($cuota['moneda']) ?> <?= number_format($cuota['total_venta']) ?> </p>
+       
+            <p><strong>INICIAL:</strong><?= htmlspecialchars($cuota['moneda']) ?><?= number_format($cuota['inicial'], 2) ?></p>
+            <p><strong>SALDO CONTRATO:</strong><?= htmlspecialchars($cuota['moneda']) ?><?= number_format($cuota['saldo_contrato'], 2) ?></p>
         </div>
     </section>
 
@@ -109,11 +110,11 @@ $conn->close();
                     <tr>
                         <td><?= $detalle['num_cuota'] ?></td>
                         <td><?= htmlspecialchars($detalle['fecha_pago']) ?></td>
-                        <td>S/ <?= number_format($detalle['cuota_mensual'], 2) ?></td>
-                        <td>S/ <?= number_format($detalle['monto_restante'], 2) ?></td>
+                        <td><?= htmlspecialchars($cuota['moneda']) ?><?= number_format($detalle['cuota_mensual'], 2) ?></td>
+                        <td><?= htmlspecialchars($cuota['moneda']) ?><?= number_format($detalle['monto_restante'], 2) ?></td>
                         <td><?= htmlspecialchars($detalle['fecha_deposito']) ?></td>
-                        <td>S/ <?= number_format($detalle['cancelado_a_la_fecha'], 2) ?></td>
-                        <td>S/ <?= number_format($detalle['monto_abonado'], 2) ?></td>
+                        <td><?= htmlspecialchars($cuota['moneda']) ?><?= number_format($detalle['cancelado_a_la_fecha'], 2) ?></td>
+                        <td><?= htmlspecialchars($cuota['moneda']) ?><?= number_format($detalle['monto_abonado'], 2) ?></td>
                         <td><?= htmlspecialchars($detalle['modo_pago']) ?></td>
                     </tr>
                 <?php endforeach; ?>
@@ -126,10 +127,11 @@ $conn->close();
             <p>VºBº SUBGERENTE</p>
             <img src="images/firma.png" alt="Firma Subgerente" class="firma-img">
         </div>
-        <div class="footer-right">
-            <img src="images/logo_amorena.png" alt="Logo Amorena" class="footer-img">
-        </div>
-    </footer>
+      
+    <div class="footer-right">
+    <img src="images/logo_amorena.png" alt="Logo Amorena" class="footer-img" style="max-width: 280px; height: auto;">
+</div>
+
 </div>
 </body>
 </html>

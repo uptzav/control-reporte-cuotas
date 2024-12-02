@@ -17,11 +17,12 @@
         <form action="vista_previa.php" method="post">
             <div class="mb-3">
                 <label for="cliente" class="form-label">Cliente:</label>
-                <input type="text" class="form-control" id="cliente" name="cliente" required>
+                <input type="text" class="form-control" name="cliente" id="cliente" pattern="[a-zA-Z\s]+" required title="Solo se permiten letras y espacios">
             </div>
             <div class="mb-3">
                 <label for="dni" class="form-label">DNI:</label>
-                <input type="text" class="form-control" id="dni" name="dni" required>
+                <input type="text" class="form-control"  name="dni" id="dni" maxlength="8" pattern="\d{8}" required title="El DNI debe contener exactamente 8 dígitos">
+
             </div>
             <div class="mb-3">
                 <label for="fecha_contrato" class="form-label">Fecha Firma del Contrato:</label>
@@ -29,28 +30,42 @@
             </div>
             <div class="mb-3">
                 <label for="manzana" class="form-label">Manzana:</label>
-                <input type="text" class="form-control" id="manzana" name="manzana" required>
+                <input type="text" class="form-control" name="manzana" id="manzana" maxlength="2" required>
             </div>
             <div class="mb-3">
                 <label for="lote" class="form-label">Lote:</label>
-                <input type="text" class="form-control" id="lote" name="lote" required>
+                <input type="text" class="form-control" name="lote" id="lote" maxlength="2" pattern="\d{1,2}" required title="El lote debe contener solo números y un máximo de 2 dígitos">
             </div>
             <div class="mb-3">
                 <label for="area" class="form-label">Área:</label>
-                <input type="text" class="form-control" id="area" name="area" required>
+                <input type="text" class="form-control" id="area" maxlength="6" pattern="\d{1,3}(\.\d+)?" required title="Ingrese un número con hasta 3 dígitos enteros y decimales opcionales">
             </div>
+
+
             <div class="mb-3">
-                <label for="total_venta" class="form-label">Total Venta (S/):</label>
+    <label for="moneda" class="form-label">Moneda:</label>
+    <select class="form-control" id="moneda" name="moneda" required>
+        <option value="S/. ">Soles</option>
+        <option value="$ ">Dólares</option>
+    </select>
+</div>
+
+
+            <div class="mb-3">
+                <label for="total_venta" class="form-label">Total Venta: </label>
                 <input type="number" step="0.01" class="form-control" id="total_venta" name="total_venta" required>
             </div>
             <div class="mb-3">
-                <label for="inicial" class="form-label">Inicial (S/):</label>
+                <label for="inicial" class="form-label">Inicial: </label>
                 <input type="number" step="0.01" class="form-control" id="inicial" name="inicial" required>
             </div>
             <div class="mb-3">
-                <label for="cuota_mensual" class="form-label">Cuota Mensual (S/):</label>
+                <label for="cuota_mensual" class="form-label">Cuota Mensual: </label>
                 <input type="number" step="0.01" class="form-control" id="cuota_mensual" name="cuota_mensual" required>
             </div>
+            
+
+            
             <div class="mb-3">
                 <label for="modo_pago" class="form-label">Modo de Pago:</label>
                 <select class="form-control" id="modo_pago" name="modo_pago" required>
@@ -59,6 +74,7 @@
                     <option value="Efectivo">Efectivo</option>
                 </select>
             </div>
+
             <div class="form-group">
         <label for="fecha_deposito">Fecha de Depósito:</label>
         <input type="date" id="fecha_deposito" name="fecha_deposito" class="form-control" required>
@@ -90,6 +106,65 @@
     inicialInput.addEventListener('input', validateFields);
     cuotaMensualInput.addEventListener('input', validateFields);
 </script>
+
+<script>
+    document.getElementById("manzana").addEventListener("input", function() {
+        if (this.value.length > 2) {
+            this.value = this.value.slice(0, 2); // Limita el texto a 2 caracteres
+        }
+    });
+</script>
+
+<script>
+    document.getElementById("dni").addEventListener("input", function() {
+        this.value = this.value.replace(/[^0-9]/g, ''); // Elimina cualquier carácter que no sea un número
+        if (this.value.length > 8) {
+            this.value = this.value.slice(0, 8); // Limita a 8 caracteres
+        }
+    });
+</script>
+
+<script>
+    document.getElementById("cliente").addEventListener("input", function() {
+        this.value = this.value.replace(/[^a-zA-Z\s]/g, ''); // Elimina cualquier carácter que no sea una letra o espacio
+    });
+</script>
+
+<script>
+    document.getElementById("lote").addEventListener("input", function() {
+        this.value = this.value.replace(/[^0-9]/g, ''); // Elimina cualquier carácter que no sea un número
+        if (this.value.length > 8) {
+            this.value = this.value.slice(0, 2); // Limita a 2 caracteres
+        }
+    });
+</script>
+
+<script>
+    document.getElementById("lote").addEventListener("input", function() {
+        this.value = this.value.replace(/[^0-9]/g, ''); // Elimina cualquier carácter que no sea un número
+        if (this.value.length > 8) {
+            this.value = this.value.slice(0, 3); // Limita a 2 caracteres
+        }
+    });
+</script>
+
+<script>
+    document.getElementById("area").addEventListener("input", function() {
+        // Permite solo números, un punto decimal y un máximo de 3 enteros
+        this.value = this.value.replace(/[^0-9.]/g, ''); // Elimina caracteres no permitidos
+        const parts = this.value.split('.');
+        
+        if (parts[0].length > 3) {
+            this.value = parts[0].slice(0, 3) + (parts[1] ? '.' + parts[1] : ''); // Limita a 3 dígitos enteros
+        }
+
+        if (parts[1] && parts[1].length > 3) {
+            parts[1] = parts[1].slice(0, 3); // Limita los decimales a 2 si es necesario
+            this.value = parts.join('.');
+        }
+    });
+</script>
+
 
 </body>
 </html>

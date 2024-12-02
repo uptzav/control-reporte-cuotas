@@ -152,11 +152,11 @@ $conn->close();
                 <input type="number" step="0.01" class="form-control" id="area" name="area" value="<?= htmlspecialchars($registro['area']) ?>" required>
             </div>
             <div class="mb-3">
-                <label for="total_venta" class="form-label">Total Venta (S/):</label>
+                <label for="total_venta" class="form-label">Total Venta:</label>
                 <input type="number" step="0.01" class="form-control" id="total_venta" name="total_venta" value="<?= htmlspecialchars($registro['total_venta']) ?>" required>
             </div>
             <div class="mb-3">
-                <label for="inicial" class="form-label">Inicial (S/):</label>
+                <label for="inicial" class="form-label">Inicial:</label>
                 <input type="number" step="0.01" class="form-control" id="inicial" name="inicial" value="<?= htmlspecialchars($registro['inicial']) ?>" required>
             </div>
 
@@ -172,11 +172,11 @@ $conn->close();
                             <input type="date" class="form-control" id="fecha_pago_<?= $detalle['id_detalle_cuotas'] ?>" name="detalle_cuotas[<?= $detalle['id_detalle_cuotas'] ?>][fecha_pago]" value="<?= $detalle['fecha_pago'] ?>" required>
                         </div>
                         <div class="mb-3">
-                            <label for="cuota_mensual_<?= $detalle['id_detalle_cuotas'] ?>" class="form-label">Cuota Mensual (S/):</label>
+                            <label for="cuota_mensual_<?= $detalle['id_detalle_cuotas'] ?>" class="form-label">Cuota Mensual:</label>
                             <input type="number" step="0.01" class="form-control" id="cuota_mensual_<?= $detalle['id_detalle_cuotas'] ?>" name="detalle_cuotas[<?= $detalle['id_detalle_cuotas'] ?>][cuota_mensual]" value="<?= $detalle['cuota_mensual'] ?>" required>
                         </div>
                         <div class="mb-3">
-                            <label for="monto_restante_<?= $detalle['id_detalle_cuotas'] ?>" class="form-label">Monto Restante (S/):</label>
+                            <label for="monto_restante_<?= $detalle['id_detalle_cuotas'] ?>" class="form-label">Monto Restante:</label>
                             <input type="number" step="0.01" class="form-control" id="monto_restante_<?= $detalle['id_detalle_cuotas'] ?>" name="detalle_cuotas[<?= $detalle['id_detalle_cuotas'] ?>][monto_restante]" value="<?= $detalle['monto_restante'] ?>" required>
                         </div>
                         <div class="mb-3">
@@ -184,11 +184,11 @@ $conn->close();
                             <input type="date" class="form-control" id="fecha_deposito_<?= $detalle['id_detalle_cuotas'] ?>" name="detalle_cuotas[<?= $detalle['id_detalle_cuotas'] ?>][fecha_deposito]" value="<?= $detalle['fecha_deposito'] ?>">
                         </div>
                         <div class="mb-3">
-                            <label for="cancelado_a_la_fecha_<?= $detalle['id_detalle_cuotas'] ?>" class="form-label">Cancelado a la Fecha (S/):</label>
+                            <label for="cancelado_a_la_fecha_<?= $detalle['id_detalle_cuotas'] ?>" class="form-label">Cancelado a la Fecha:</label>
                             <input type="number" step="0.01" class="form-control" id="cancelado_a_la_fecha_<?= $detalle['id_detalle_cuotas'] ?>" name="detalle_cuotas[<?= $detalle['id_detalle_cuotas'] ?>][cancelado_a_la_fecha]" value="<?= $detalle['cancelado_a_la_fecha'] ?>" required>
                         </div>
                         <div class="mb-3">
-                            <label for="monto_abonado_<?= $detalle['id_detalle_cuotas'] ?>" class="form-label">Monto Abonado (S/):</label>
+                            <label for="monto_abonado_<?= $detalle['id_detalle_cuotas'] ?>" class="form-label">Monto Abonado:</label>
                             <input type="number" step="0.01" class="form-control" id="monto_abonado_<?= $detalle['id_detalle_cuotas'] ?>" name="detalle_cuotas[<?= $detalle['id_detalle_cuotas'] ?>][monto_abonado]" value="<?= $detalle['monto_abonado'] ?>" required>
                         </div>
                         <div class="mb-3">
