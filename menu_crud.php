@@ -65,10 +65,81 @@ $datos = $result->fetch_all(MYSQLI_ASSOC);
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+
+    <style>
+        /* Variables CSS para los colores de la tabla */
+        :root {
+            --table-bg-color: #ffffff;
+            --table-text-color: #212529;
+            --table-header-bg: #4CAF50;
+            --table-header-text: #ffffff;
+            --table-border-color: #dddddd;
+        }
+
+        /* Variables para el modo oscuro */
+        .dark-mode {
+            --table-bg-color: #FEFFFE;
+            --table-text-color: #FEFFFE;
+            --table-header-bg: #333333;
+            --table-header-text: #81c784;
+            --table-border-color: #555555;
+        }
+
+        /* Estilo de la tabla */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--table-bg-color);
+            color: var(--table-text-color);
+        }
+
+        .table th, .table td {         
+            border: 1px solid var(--table-border-color);
+            padding: 10px;
+            text-align: center;
+        }
+
+        .table th {
+            background-color: var(--table-header-bg);
+            color: var(--table-header-text);
+        }
+
+        /* Espaciado adicional en la página */
+        .container {
+            margin-top: 20px;
+        }
+
+        /* Contenedor para organizar los botones */
+        .action-buttons .btn {
+            
+            display: flex; /* Flexbox para organizar los botones */
+            justify-content: space-between; /* Distribuye los botones uniformemente */
+            gap: 5px; /* Espacio entre botones */
+            padding: 5px 10px; /* Tamaño compacto */
+            font-size: 0.85rem; /* Texto más pequeño */
+            width: 100%; /* Botones con igual tamaño */
+            text-align: center; /* Asegura que el texto esté centrado */
+            
+        }
+    
+
+        td .action-buttons {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: row; /* Los botones se apilan verticalmente */
+            gap: 5px;
+            height: 100%;
+            width: 100%;
+        }
+
+
+    </style>
+
 </head>
 <body>
-    <div class="container mt-5">
-        <h1 class="text-center mb-4">Menú CRUD</h1>
+    <div class="container">
+        <h1 class="text-center mb-4">Menú Reporte de Cuotas</h1>
         
         <!-- Menú de navegación -->
         <nav class="mb-4">
@@ -79,7 +150,7 @@ $datos = $result->fetch_all(MYSQLI_ASSOC);
         <!-- Tabla responsiva -->
         <div class="table-responsive">
             <h2>Datos de Cuotas y Detalles</h2>
-            <table id="crudTable" class="table table-striped table-bordered">
+            <table id="crudTable" class="table table-striped">
                 <thead class="table-dark">
                     <tr>
                         <th>ID</th>
@@ -112,14 +183,16 @@ $datos = $result->fetch_all(MYSQLI_ASSOC);
 
 
                         <td>
+                        <div class="action-buttons">
+                        <a href="reporte_vista_previa.php?id=<?= $row['id_cuotas'] ?>" class="btn btn-info btn-sm">Ver</a>
                             <a href="editar.php?id=<?= $row['id_cuotas'] ?>" class="btn btn-warning btn-sm">Editar</a>
                             <form method="POST" action="" class="d-inline">
                                 <input type="hidden" name="id_cuotas" value="<?= $row['id_cuotas'] ?>">
                                 <button type="submit" name="delete" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este registro?')">Eliminar</button>
-                            </form>
-                            <a href="reporte_vista_previa.php?id=<?= $row['id_cuotas'] ?>" class="btn btn-info btn-sm">Vista Previa</a>
-
+                            </form>   
+                            </div>               
                         </td>
+
                     </tr>
                     <?php endforeach; ?>
                 </tbody>

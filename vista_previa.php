@@ -155,7 +155,7 @@ $conn->close();
         <p><strong>CLIENTE:</strong> <?= htmlspecialchars($cliente) ?></p>
         <p><strong>DNI:</strong> <?= htmlspecialchars($dni) ?></p>
         <p><strong>FECHA FIRMA CONTRATO:</strong> <?= htmlspecialchars($fecha_contrato) ?></p>
-        <p><strong>MANZANA:</strong> <?= htmlspecialchars($manzana) ?> <strong>Lote:</strong> <?= htmlspecialchars($lote) ?></p>
+        <p><strong>MANZANA:</strong> <?= htmlspecialchars($manzana) ?> <strong>LOTE:</strong> <?= htmlspecialchars($lote) ?></p>
         <p><strong>ÁREA:</strong> <?= htmlspecialchars($area) ?> m²</p>
         </div>
 
