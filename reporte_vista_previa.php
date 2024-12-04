@@ -1,6 +1,7 @@
 <?php
-
 require_once __DIR__ . '/vendor/autoload.php';
+use mpdf\mpdf;
+
 // Configurar conexión a la base de datos
 use Dotenv\Dotenv;
 
@@ -11,14 +12,13 @@ $servername = $_ENV['DB_HOST'];
 $username = $_ENV['DB_USERNAME'];
 $password = $_ENV['DB_PASSWORD'];
 $dbname = $_ENV['DB_DATABASE'];
-$port = $_ENV['DB_PORT']; // Opcional si usas el puerto predeterminado (3306)
+$port = $_ENV['DB_PORT'];
 
 $conn = new mysqli($servername, $username, $password, $dbname, $port);
 
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
-
 
 // Verificar que se haya recibido un ID
 if (isset($_GET['id'])) {
@@ -42,7 +42,20 @@ if (isset($_GET['id'])) {
 }
 
 $conn->close();
+
+// Verificar si se solicita el PDF
+if (isset($_GET['download']) && $_GET['download'] == 'pdf') {
+    ob_start(); // Iniciar buffer para capturar el HTML generado
+    include('reporte_vista_previa_template.php'); // Cargar la vista en un archivo separado
+    $html = ob_get_clean(); // Obtener el HTML generado
+
+    $mpdf = new Mpdf();
+    $mpdf->WriteHTML($html);
+    $mpdf->Output('Reporte_Cuotas_' . $id_cuotas . '.pdf', 'C'); // Descargar el PDF
+    exit;
+}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="es">

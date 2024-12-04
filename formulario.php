@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="container">
-        <h2>Formulario de Registro</h2>
+        <h1>Formulario de Registro</h1>
         <form action="vista_previa.php" method="post">
             <div class="mb-3">
                 <label for="cliente" class="form-label">Cliente:</label>

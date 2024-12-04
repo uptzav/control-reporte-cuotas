@@ -133,9 +133,7 @@ $datos = $result->fetch_all(MYSQLI_ASSOC);
             width: 100%;
         }
 
-
     </style>
-
 </head>
 <body>
     <div class="container">
@@ -180,16 +178,16 @@ $datos = $result->fetch_all(MYSQLI_ASSOC);
                         <td><?= $row['moneda'], number_format($row['monto_restante'], 2) ?></td>
                         <td><?= date('d/m/Y', strtotime($row['fecha_deposito'])) ?></td>
                         <td><?= $row['moneda'], number_format($row['cancelado_a_la_fecha'], 2) ?></td>
-
-
                         <td>
                         <div class="action-buttons">
                         <a href="reporte_vista_previa.php?id=<?= $row['id_cuotas'] ?>" class="btn btn-info btn-sm">Ver</a>
                             <a href="editar.php?id=<?= $row['id_cuotas'] ?>" class="btn btn-warning btn-sm">Editar</a>
                             <form method="POST" action="" class="d-inline">
                                 <input type="hidden" name="id_cuotas" value="<?= $row['id_cuotas'] ?>">
-                                <button type="submit" name="delete" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este registro?')">Eliminar</button>
+                                <button type="submit" name="delete" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este registro?')">Eliminar</button>                              
                             </form>   
+                            <a href="javascript:void(0);" class="btn btn-success btn-sm" onclick="printReport('reporte_vista_previa.php?id=<?= $row['id_cuotas']; ?>')">Descargar PDF</a>
+
                             </div>               
                         </td>
 
@@ -199,6 +197,20 @@ $datos = $result->fetch_all(MYSQLI_ASSOC);
             </table>
         </div>
     </div>
+
+    <!--imprimir--> 
+    <script>
+    function printReport(url) {
+        // Abre la vista previa en una nueva ventana o pestaña
+        const printWindow = window.open(url, '_blank');
+
+        // Espera a que la página cargue completamente
+        printWindow.onload = function () {
+            // Llama al diálogo de impresión
+            printWindow.print();
+        };
+    }
+</script>
 
     <!-- Scripts de DataTables -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -211,8 +223,7 @@ $datos = $result->fetch_all(MYSQLI_ASSOC);
                     url: "//cdn.datatables.net/plug-ins/1.13.5/i18n/es-ES.json"
                 },
                 pageLength: 10,
-                lengthMenu: [5, 10, 25, 50],
-                
+                lengthMenu: [5, 10, 25, 50],              
             });
         });
     </script>

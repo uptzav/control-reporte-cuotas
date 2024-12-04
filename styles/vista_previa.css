@@ -38,7 +38,8 @@ header .logo {
 
 .info {
     display: flex;
-    flex-wrap: wrap; /* Permite que los elementos se ajusten en dispositivos pequeños */
+    flex-wrap: wrap; 
+    justify-content: space-between; /* Permite que los elementos se ajusten en dispositivos pequeños */
     gap: 20px; /* Espaciado entre las secciones */
     margin-bottom: 30px; /* Separación de otras secciones */
     padding: 20px;
