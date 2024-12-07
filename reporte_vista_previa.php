@@ -1,7 +1,5 @@
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
-use mpdf\mpdf;
-
 // Configurar conexión a la base de datos
 use Dotenv\Dotenv;
 
@@ -15,7 +13,6 @@ $dbname = $_ENV['DB_DATABASE'];
 $port = $_ENV['DB_PORT'];
 
 $conn = new mysqli($servername, $username, $password, $dbname, $port);
-
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
@@ -40,22 +37,9 @@ if (isset($_GET['id'])) {
 } else {
     die("ID de cuota no especificado.");
 }
-
 $conn->close();
-
 // Verificar si se solicita el PDF
-if (isset($_GET['download']) && $_GET['download'] == 'pdf') {
-    ob_start(); // Iniciar buffer para capturar el HTML generado
-    include('reporte_vista_previa_template.php'); // Cargar la vista en un archivo separado
-    $html = ob_get_clean(); // Obtener el HTML generado
-
-    $mpdf = new Mpdf();
-    $mpdf->WriteHTML($html);
-    $mpdf->Output('Reporte_Cuotas_' . $id_cuotas . '.pdf', 'C'); // Descargar el PDF
-    exit;
-}
 ?>
-
 
 <!DOCTYPE html>
 <html lang="es">
@@ -65,7 +49,6 @@ if (isset($_GET['download']) && $_GET['download'] == 'pdf') {
     <link rel="stylesheet" href="styles/vista_previa.css">
     <title>Reporte de Cuotas</title>
 </head>
-
 <body>
 <div class="container">
     <!-- Encabezado con logo -->
@@ -75,6 +58,7 @@ if (isset($_GET['download']) && $_GET['download'] == 'pdf') {
         </div>
         <h1>HENKO GROUP S.A.C.</h1>
         <p>Proyecto: <strong>Finca Amorena</strong></p>
+        
     </header>
 
     <!-- Información del Cliente y Lote -->
@@ -85,7 +69,6 @@ if (isset($_GET['download']) && $_GET['download'] == 'pdf') {
             <p><strong>VERSIÓN:</strong> 001</p>
             <p><strong>REGISTRO Nº:</strong> <?= htmlspecialchars($cuota['registro_no']) ?></p>
         </div>
-
         <div class="info-cliente">
             <p><strong>CLIENTE:</strong> <?= htmlspecialchars($cuota['cliente']) ?></p>
             <p><strong>DNI:</strong> <?= htmlspecialchars($cuota['dni']) ?></p>
@@ -93,15 +76,12 @@ if (isset($_GET['download']) && $_GET['download'] == 'pdf') {
             <p><strong>MANZANA:</strong> <?= htmlspecialchars($cuota['manzana']) ?> <strong>Lote:</strong> <?= htmlspecialchars($cuota['lote']) ?></p>
             <p><strong>ÁREA:</strong> <?= htmlspecialchars($cuota['area']) ?> m²</p>
         </div>
-
         <div class="info-lote">
    <p><strong>TOTAL VENTA: </strong><?= htmlspecialchars($cuota['moneda']) ?> <?= number_format($cuota['total_venta']) ?> </p>
-       
             <p><strong>INICIAL:</strong><?= htmlspecialchars($cuota['moneda']) ?><?= number_format($cuota['inicial'], 2) ?></p>
             <p><strong>SALDO CONTRATO:</strong><?= htmlspecialchars($cuota['moneda']) ?><?= number_format($cuota['saldo_contrato'], 2) ?></p>
         </div>
     </section>
-
     <!-- Cronograma de Pagos -->
     <section class="cronograma">
         <h3>Cronograma de Pagos</h3>
@@ -134,17 +114,14 @@ if (isset($_GET['download']) && $_GET['download'] == 'pdf') {
             </tbody>
         </table>
     </section>
-
     <footer class="footer">
         <div class="footer-left">
             <p>VºBº SUBGERENTE</p>
             <img src="images/firma.png" alt="Firma Subgerente" class="firma-img">
         </div>
-      
     <div class="footer-right">
     <img src="images/logo_amorena.png" alt="Logo Amorena" class="footer-img" style="max-width: 280px; height: auto;">
 </div>
-
 </div>
 </body>
 </html>

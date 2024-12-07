@@ -19,10 +19,6 @@ if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
-
-
-
-
 // Capturar los valores enviados desde el formulario
 $moneda = isset($_POST['moneda']) ? $_POST['moneda'] : 'No definido';
 
@@ -30,8 +26,6 @@ $moneda = isset($_POST['moneda']) ? $_POST['moneda'] : 'No definido';
 if (!in_array($moneda, ['S/. ', '$ '])) {
     die('Moneda inválida.');
 }
-
-
 
 // Función para generar registro_no
 function generarRegistroNo($conn) {
@@ -46,7 +40,6 @@ function generarRegistroNo($conn) {
     } else {
         $nuevoNumero = 1;
     }
-
     return "CRC-" . str_pad($nuevoNumero, 3, "0", STR_PAD_LEFT);
 }
 
@@ -122,17 +115,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 $conn->close();
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="styles/vista_previa.css">
+
     <title>Reporte de Cuotas</title>
 </head>
 
 <body>
+<!-- Aquí está el botón -->
+<a href="menu_crud.php" class="btn btn-success d-flex align-items-center justify-content-center">
+        <i class="bi bi-arrow-return-left me-2"></i> Ir a Menu  </a>
 <div class="container">
          <!-- Encabezado con logo -->
          <header>
@@ -166,16 +164,12 @@ $conn->close();
 
 </div>
 
-
-
 </section>  
-
-
    <!-- Cronograma de Pagos -->
    <section class="cronograma">
     <h3>Cronograma de Pagos</h3>
     <table class="table table-bordered table-striped">
-        <thead class="table-success">
+    <thead class="table-success">
             <tr>
                 <th>N° Cuota</th>
                 <th>Fecha de Pago</th>
@@ -210,20 +204,15 @@ $conn->close();
     </table>
 </section>
 
-
    <footer class="footer">
     <div class="footer-left">
     <p>VºBº SUBGERENTE</p>
         <img src="images/firma.png" alt="Firma Subgerente" class="firma-img">
-
     </div>
     <div class="footer-right">
     <img src="images/logo_amorena.png" alt="Logo Amorena" class="footer-img" style="max-width: 280px; height: auto;">
 </div>
-
 </footer>
-
-   
     </div>
 </body>
 </html>
