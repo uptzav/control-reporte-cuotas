@@ -36,7 +36,6 @@
         .sidebar a:hover {
             background-color: var(--sidebar-hover-color, #81c784);
         }
-
         .content {
             flex-grow: 1;
             padding: 20px;
@@ -44,7 +43,6 @@
             color: var(--content-text-color, #212529);
             transition: background-color 0.3s ease, color 0.3s ease;
         }
-
         /* Variables para modo claro */
         :root {
             --sidebar-bg-color: #4CAF50;
@@ -53,7 +51,6 @@
             --content-bg-color: #f8f9fa;
             --content-text-color: #212529;
         }
-
         /* Variables para modo oscuro */
         .dark-mode {
             --sidebar-bg-color: #333333;
@@ -62,7 +59,9 @@
             --content-bg-color: #121212;
             --content-text-color: #f8f9fa;
         }
+
     </style>
+    
 </head>
 <body>
     <!-- Barra lateral -->
@@ -99,6 +98,7 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
     <script>
         // Alternar entre modo claro y oscuro
         document.getElementById('toggle-dark-mode').addEventListener('click', function() {
@@ -106,5 +106,6 @@
             this.textContent = document.body.classList.contains('dark-mode') ? 'Modo Claro' : 'Modo Oscuro';
         });
     </script>
+
 </body>
 </html>

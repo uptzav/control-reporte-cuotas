@@ -88,6 +88,7 @@ $conn->close();
         <table>
             <thead>
                 <tr>
+                    
                     <th>N° Cuota</th>
                     <th>Fecha de Pago</th>
                     <th>Cuota Mensual</th>
@@ -97,6 +98,7 @@ $conn->close();
                     <th>Monto Abonado a la Fecha</th>
                     <th>Modo de Pago</th>
                 </tr>
+
             </thead>
             <tbody>
                 <?php foreach ($cuotas as $detalle): ?>

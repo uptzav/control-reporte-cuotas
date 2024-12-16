@@ -140,5 +140,90 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+    const totalVentaInput = document.getElementById('total_venta');
+    const inicialInput = document.getElementById('inicial');
+    const cuotaMensualInput = document.getElementById('cuota_mensual');
+
+    function validateFields() {
+        const totalVenta = parseFloat(totalVentaInput.value) || 0;
+        const inicial = parseFloat(inicialInput.value) || 0;
+        const saldoRestante = totalVenta - inicial;
+
+        if (inicial > totalVenta) {
+            alert('El monto inicial no puede ser mayor que el Total Venta.');
+            inicialInput.value = '';
+        }
+
+    }
+
+    totalVentaInput.addEventListener('input', validateFields);
+    inicialInput.addEventListener('input', validateFields);
+    cuotaMensualInput.addEventListener('input', validateFields);
+</script>
+
+<script>
+    document.getElementById("manzana").addEventListener("input", function() {
+        if (this.value.length > 2) {
+            this.value = this.value.slice(0, 2); // Limita el texto a 2 caracteres
+        }
+    });
+</script>
+
+<script>
+    document.getElementById("dni").addEventListener("input", function() {
+        this.value = this.value.replace(/[^0-9]/g, ''); // Elimina cualquier carácter que no sea un número
+        if (this.value.length > 8) {
+            this.value = this.value.slice(0, 8); // Limita a 8 caracteres
+        }
+    });
+</script>
+
+<script>
+    document.getElementById("cliente").addEventListener("input", function() {
+        this.value = this.value.replace(/[^a-zA-Z\s\/\-]/g, ''); // Permite letras, espacios, "/", y "-"
+    });
+</script>
+
+<script>
+    document.getElementById("lote").addEventListener("input", function() {
+        this.value = this.value.replace(/[^0-9]/g, ''); // Elimina cualquier carácter que no sea un número
+        if (this.value.length > 8) {
+            this.value = this.value.slice(0, 2); // Limita a 2 caracteres
+        }
+    });
+</script>
+
+<script>
+    document.getElementById("lote").addEventListener("input", function() {
+        this.value = this.value.replace(/[^0-9]/g, ''); // Elimina cualquier carácter que no sea un número
+        if (this.value.length > 8) {
+            this.value = this.value.slice(0, 3); // Limita a 2 caracteres
+        }
+    });
+</script>
+
+<script>
+    document.getElementById("area").addEventListener("input", function() {
+        // Permite solo números, un punto decimal y un máximo de 3 enteros
+        this.value = this.value.replace(/[^0-9.]/g, ''); // Elimina caracteres no permitidos
+        const parts = this.value.split('.');
+        
+        if (parts[0].length > 3) {
+            this.value = parts[0].slice(0, 3) + (parts[1] ? '.' + parts[1] : ''); // Limita a 3 dígitos enteros
+        }
+
+        if (parts[1] && parts[1].length > 3) {
+            parts[1] = parts[1].slice(0, 3); // Limita los decimales a 2 si es necesario
+            this.value = parts.join('.');
+        }
+    });
+</script>
+
 </body>
 </html>
+
+
+
+

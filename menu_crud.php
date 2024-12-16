@@ -187,7 +187,6 @@ $datos = $result->fetch_all(MYSQLI_ASSOC);
                                 <button type="submit" name="delete" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este registro?')">Eliminar</button>                              
                             </form>   
                             <a href="javascript:void(0);" class="btn btn-success btn-sm" onclick="printReport('reporte_vista_previa.php?id=<?= $row['id_cuotas']; ?>')">Descargar PDF</a>
-
                             </div>               
                         </td>
 
