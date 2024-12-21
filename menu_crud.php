@@ -1,5 +1,11 @@
 <?php
 
+session_start();
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    header("Location: login.php");
+    exit;
+}
+
 require_once __DIR__ . '/vendor/autoload.php';
 // Configurar conexión a la base de datos
 use Dotenv\Dotenv;
@@ -58,11 +64,26 @@ $datos = $result->fetch_all(MYSQLI_ASSOC);
 
 <!DOCTYPE html>
 <html lang="es">
+
+
+<header class="header">
+<div class="container text-center">
+            <img src="images/logo_henko.png" alt="Logo Henko Group" class="logo" style="max-width: 200px; height: auto;">
+        </div>
+        <nav class="nav">
+            <a href="logout.php" class="logout-btn">
+                <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+            </a>
+        </nav>
+</header>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menú CRUD Responsivo</title>
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
 
@@ -136,13 +157,14 @@ $datos = $result->fetch_all(MYSQLI_ASSOC);
     </style>
 </head>
 <body>
+
+
     <div class="container">
         <h1 class="text-center mb-4">Menú Reporte de Cuotas</h1>
         
         <!-- Menú de navegación -->
         <nav class="mb-4">
             <a href="formulario.php" class="btn btn-primary">Ir al Formulario</a>
-            <a href="menu_crud.php" class="btn btn-success">Ir al CRUD</a>
         </nav>
 
         <!-- Tabla responsiva -->
@@ -178,17 +200,27 @@ $datos = $result->fetch_all(MYSQLI_ASSOC);
                         <td><?= $row['moneda'], number_format($row['monto_restante'], 2) ?></td>
                         <td><?= date('d/m/Y', strtotime($row['fecha_deposito'])) ?></td>
                         <td><?= $row['moneda'], number_format($row['cancelado_a_la_fecha'], 2) ?></td>
+                        
                         <td>
-                        <div class="action-buttons">
-                        <a href="reporte_vista_previa.php?id=<?= $row['id_cuotas'] ?>" class="btn btn-info btn-sm">Ver</a>
-                            <a href="editar.php?id=<?= $row['id_cuotas'] ?>" class="btn btn-warning btn-sm">Editar</a>
-                            <form method="POST" action="" class="d-inline">
-                                <input type="hidden" name="id_cuotas" value="<?= $row['id_cuotas'] ?>">
-                                <button type="submit" name="delete" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este registro?')">Eliminar</button>                              
-                            </form>   
-                            <a href="javascript:void(0);" class="btn btn-success btn-sm" onclick="printReport('reporte_vista_previa.php?id=<?= $row['id_cuotas']; ?>')">Descargar PDF</a>
-                            </div>               
+                            <div class="action-buttons">
+                                <a href="reporte_vista_previa.php?id=<?= $row['id_cuotas'] ?>" class="btn btn-info btn-sm" title="Ver">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a href="editar.php?id=<?= $row['id_cuotas'] ?>" class="btn btn-warning btn-sm" title="Editar">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <form method="POST" action="" class="d-inline">
+                                    <input type="hidden" name="id_cuotas" value="<?= $row['id_cuotas'] ?>">
+                                    <button type="submit" name="delete" class="btn btn-danger btn-sm" title="Eliminar" onclick="return confirm('¿Estás seguro de eliminar este registro?')">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                                <a href="javascript:void(0);" class="btn btn-success btn-sm" title="Descargar PDF" onclick="printReport('reporte_vista_previa.php?id=<?= $row['id_cuotas'] ?>')">
+                                    <i class="bi bi-file-earmark-pdf"></i>
+                                </a>
+                            </div>
                         </td>
+
 
                     </tr>
                     <?php endforeach; ?>

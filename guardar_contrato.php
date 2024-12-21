@@ -28,7 +28,7 @@ $manzana = $_POST['manzana'];
 $lote = $_POST['lote'];
 $num_cuotas = intval($_POST['num_cuotas']);
 $precio_total = floatval($_POST['precio_total']);
-$moneda = $_POST['moneda'];
+$moneda = ($_POST['moneda'] === 'Soles') ? 'S/.' : '$'; // Guardar símbolo S/. o $
 $cuota_inicial = floatval($_POST['cuota_inicial']);
 $fecha_pago = $_POST['fecha_pago'];
 

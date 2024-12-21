@@ -1,3 +1,12 @@
+
+<?php
+session_start();
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    header("Location: login.php");
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -53,13 +62,14 @@
                     <input type="number" step="0.01" class="form-control" id="precio_total" name="precio_total" placeholder="Ingrese el precio total" required>
                 </div>
                 <!-- Moneda -->
-                <div class="col-md-6 mb-3">
+                <div class="mb-3">
                     <label for="moneda" class="form-label">Moneda</label>
                     <select class="form-select" id="moneda" name="moneda" required>
-                        <option value="Soles">S/. </option>
-                        <option value="Dólares">$ </option>
+                        <option value="Soles">S/.</option>
+                        <option value="Dólares">$</option>
                     </select>
                 </div>
+                
             </div>
             <div class="row">
                 <!-- Cuota Inicial -->

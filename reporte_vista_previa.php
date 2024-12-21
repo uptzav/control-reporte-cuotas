@@ -1,4 +1,12 @@
 <?php
+
+session_start();
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    header("Location: login.php");
+    exit;
+}
+
+
 require_once __DIR__ . '/vendor/autoload.php';
 // Configurar conexión a la base de datos
 use Dotenv\Dotenv;
@@ -127,3 +135,8 @@ $conn->close();
 </div>
 </body>
 </html>
+
+
+
+
+
