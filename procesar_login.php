@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (password_verify($password, $user['password'])) {
             $_SESSION['loggedin'] = true;
             $_SESSION['username'] = $username;
-            header("Location: menu_crud.php");
+            header("Location: admin_panel.php");
             exit;
         } else {
             echo "<script>alert('Contraseña incorrecta.'); window.location.href='login.php';</script>";

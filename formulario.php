@@ -14,26 +14,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario de Registro</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        /* Estilos para el footer sticky */
-        body {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            margin: 0;
-        }
 
-        main {
-            flex: 1; /* Empuja el footer hacia abajo si el contenido no llena la pantalla */
-        }
-
-        footer {
-            background-color: #f8f9fa;
-            text-align: center;
-            padding: 1rem 0;
-            border-top: 1px solid #ddd;
-        }
-    </style>
 </head>
 
 <body>
@@ -144,10 +125,6 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
         </form>
     </main>
 
-    <footer>
-        <p class="mb-0">Desarrollado por Henko Group S.A.C. - 2024</p>
-    </footer>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
@@ -232,6 +209,10 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 
 </body>
 </html>
+
+
+
+
 
 
 

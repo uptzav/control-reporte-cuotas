@@ -1,5 +1,6 @@
 <?php
 
+
 session_start();
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header("Location: login.php");
@@ -160,7 +161,7 @@ $datos = $result->fetch_all(MYSQLI_ASSOC);
 
 
     <div class="container">
-        <h1 class="text-center mb-4">Menú Reporte de Cuotas</h1>
+        <h1 class="text-center mb-4">Reporte de Cuotas</h1>
         
         <!-- Menú de navegación -->
         <nav class="mb-4">

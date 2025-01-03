@@ -34,7 +34,7 @@ body {
     overflow: hidden;
     transition: all 0.35s ease-in-out;
     background-color: #fafbfe;
-    padding: 10px; /* Añade espacio interno para un diseño más limpio */
+    padding: 0px; /* Añade espacio interno para un diseño más limpio */
 }
 
 

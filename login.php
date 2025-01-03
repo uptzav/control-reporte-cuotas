@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
-    header("Location: menu_crud.php");
+    header("Location: admin_panel.php");
     exit;
 }
 ?>
@@ -37,7 +37,6 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
             </form>
         </div>
     </div>
-
     <!-- Modal de ejemplo -->
     <div class="modal fade" id="loginErrorModal" tabindex="-1" aria-labelledby="loginErrorModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -55,7 +54,6 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
             </div>
         </div>
     </div>
-
     <script>
         // Bootstrap validation
         (function () {
@@ -71,7 +69,6 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
                 }, false);
             });
         })();
-
         // Mostrar modal de error (Ejemplo)
         // const loginError = true; // Cambia esto según tu lógica del backend
         // if (loginError) {
@@ -81,3 +78,9 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
     </script>
 </body>
 </html>
+
+
+
+
+
+
