@@ -99,3 +99,12 @@ VALUES ($id_cuotas, {$cuota['num_cuota']}, '{$cuota['fecha_pago']}', {$cuota['cu
 
 $conn->close();
 ?>
+
+
+
+
+
+
+
+
+

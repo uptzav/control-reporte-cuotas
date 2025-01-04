@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !isset($_POST['edit_id'])) {
         $stmt->bind_param("sss", $usuario, $password_hashed, $rol);
 
         if ($stmt->execute()) {
-            echo "<script>alert('Usuario creado exitosamente.'); window.location.href = 'usuarios.php';</script>";
+            echo "<script>alert('Usuario creado exitosamente.'); window.location.href = 'admin_panel.php?page=usuarios';</script>";
         } else {
             echo "Error al crear el usuario: " . $stmt->error;
         }
@@ -67,7 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['edit_id'])) {
         }
 
         if ($stmt->execute()) {
-            echo "<script>alert('Usuario actualizado exitosamente.'); window.location.href = 'usuarios.php';</script>";
+            echo "<script>alert('Usuario actualizado exitosamente.'); window.location.href = 'admin_panel.php?page=usuarios';</script>";
         } else {
             echo "Error al actualizar el usuario: " . $stmt->error;
         }
@@ -85,7 +85,7 @@ if (isset($_GET['delete'])) {
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $delete_id);
     if ($stmt->execute()) {
-        echo "<script>alert('Usuario eliminado exitosamente.'); window.location.href = 'usuarios.php';</script>";
+        echo "<script>alert('Usuario eliminado exitosamente.'); window.location.href = 'admin_panel.php?page=usuarios';</script>";
     } else {
         echo "Error al eliminar el usuario: " . $stmt->error;
     }

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
    <head>
@@ -64,58 +63,33 @@
       </style>
    </head>
    <body>
-      <!-- Barra lateral -->
-      <div class="sidebar">
-         <h2>HENKO</h2>
-         </br>
-         </br>
-         </br>
-         </br>
-         <a href="?page=menu_crud">Reporte de Cuotas</a>
-         <a href="?page=recordatorio">Recordatorio de Pagos</a>
-         <a href="?page=usuarios">Usuarios</a>
-         </br>
-         </br>
-         </br>
-         </br>
-         </br>
-         </br>
-         </br>
-         </br>
-         </br>
-         </br>
-         </br>
-         </br>
-         </br>
-         </br>
-         </br>
-         </br>
-         </br>
-         </br>
-         </br>
-         </br>
-         </br>
-         </br>
-         </br>
-         </br>
-         </br>
-         </br>
-         </br>
-         </br>
-         </br>
-         </br>
-         </br>
-         </br>
+    <!-- Barra lateral -->
+<div class="sidebar">
+    <!-- Logo redondo -->
+    <img src="images/logo_blanco_henko.jpg" alt="Logo Henko" style="width: 120px; height: 120px; border-radius: 50%; display: block; margin: 0 auto; margin-bottom: 10px; object-fit: cover;">
 
-         <button id="toggle-dark-mode" class="btn btn-sm mt-3 btn-light w-100">
-            <i class="bi bi-moon"></i> Modo Oscuro
-         </button>
-         <footer>
-            <a href="logout.php" class="btn btn-dark w-100 mt-3">
-               <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
-            </a>
-         </footer>
-      </div>
+    <br><br>
+    <a href="?page=menu_crud">
+        <i class="bi bi-file-earmark-text"></i> Reporte de Cuotas
+    </a>
+    <a href="?page=recordatorio">
+        <i class="bi bi-calendar-check"></i> Recordatorio de Pagos
+    </a>
+    <a href="?page=usuarios">
+        <i class="bi bi-people"></i> Usuarios
+    </a>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+    <button id="toggle-dark-mode" class="btn btn-sm mt-3 btn-light w-100">
+        <i class="bi bi-moon"></i> Modo Oscuro
+    </button>
+    <footer>
+        <a href="logout.php" class="btn btn-dark w-100 mt-3">
+            <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+        </a>
+    </footer>
+</div>
+
       <!-- Contenido principal -->
 
       <div class="content">
@@ -151,9 +125,24 @@
              }
          });
       </script>
+
+<script>
+    // Seleccionar elementos
+    const logoInput = document.getElementById('logo-upload');
+    const logoPreview = document.getElementById('logo-preview');
+
+    // Cambiar la imagen del logo cuando se seleccione un archivo
+    logoInput.addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                // Actualizar la imagen del logo
+                logoPreview.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
    </body>
 </html>
-
-
-
-
