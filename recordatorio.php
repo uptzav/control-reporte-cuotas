@@ -1,6 +1,10 @@
 <?php
 
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header("Location: login.php");
     exit;
@@ -38,6 +42,18 @@ $result = $conn->query($sql);
 
 <!DOCTYPE html>
 <html lang="es">
+
+<header class="header">
+<div class="container text-center">
+            <img src="images/logo_henko.png" alt="Logo Henko Group" class="logo" style="max-width: 200px; height: auto;">
+        </div>
+        <nav class="nav">
+            <a href="logout.php" class="logout-btn">
+                <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+            </a>
+        </nav>
+</header>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -47,6 +63,8 @@ $result = $conn->query($sql);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div class="container mt-5">

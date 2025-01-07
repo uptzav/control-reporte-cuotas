@@ -1,5 +1,10 @@
 <?php
-session_start();
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header("Location: login.php");
     exit;
@@ -167,9 +172,9 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 </script>
 
 <script>
-    document.getElementById("cliente").addEventListener("input", function() {
-        this.value = this.value.replace(/[^a-zA-Z\s\/\-]/g, ''); // Permite letras, espacios, "/", y "-"
-    });
+   document.getElementById("cliente").addEventListener("input", function() {
+    this.value = this.value.replace(/[^a-zA-ZñÑ\s\/\-]/g, ''); // Permite letras, espacios, "/", "-", "ñ", y "Ñ"
+});
 </script>
 
 <script>

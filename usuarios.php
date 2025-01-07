@@ -1,4 +1,14 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Verificar si el usuario ha iniciado sesión
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    header("Location: login.php");
+    exit;
+}
+
 // Conectar a la base de datos
 require_once __DIR__ . '/vendor/autoload.php';
 // Configurar conexión a la base de datos
@@ -92,7 +102,6 @@ if (isset($_GET['delete'])) {
     $stmt->close();
 }
 
-
 // Obtener la lista de usuarios
 $sql = "SELECT id, username, rol FROM usuarios";
 $result = $conn->query($sql);
@@ -100,10 +109,24 @@ $result = $conn->query($sql);
 
 <!DOCTYPE html>
 <html lang="es">
+
+<header class="header">
+<div class="container text-center">
+            <img src="images/logo_henko.png" alt="Logo Henko Group" class="logo" style="max-width: 200px; height: auto;">
+        </div>
+        <nav class="nav">
+            <a href="logout.php" class="logout-btn">
+                <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+            </a>
+        </nav>
+</header>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CRUD de Usuarios</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 <body>
@@ -143,6 +166,7 @@ $result = $conn->query($sql);
                 <?php endif; ?>
             </tbody>
         </table>
+        
     </div>
 
     <!-- Modal para crear usuario -->
@@ -246,6 +270,7 @@ editModal.addEventListener('show.bs.modal', function (event) {
 <?php
 $conn->close();
 ?>
+
 
 
 
